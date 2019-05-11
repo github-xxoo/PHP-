@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h3>用户登录</h3>
+    <form action="">
+        <p>邮箱：<input type="email" name="email"></input></p>
+        <p>密码：<input type="password" name="password"></input></p>
+        <p> <button type="button">登录</button> </p>
+    </form>
+    
+
+    <script>
+        let btn = document.getElementsByTagName("button")[0];
+        btn.onclick = function(){
+          //1. 创建xhr对象
+          let xhr = new XMLHttpRequest();
+
+          //2. 监听响应状态
+          xhr.onreadystatechange = function(){
+            if(xhr.readyState === 4){
+              //判断是否拿到了响应数据
+              if(xhr.status === 200){
+                let p =  document.createElement('p');
+                p.style.color = 'red';
+
+
+                //将服务器端返回的json字符串转为js对象
+                let json = JSON.parse(xhr.responseText);
+                console.log(json);
+                p.innerHTML = json.msg;
+
+                document.forms[0].appendChild(p);
+                //禁用按钮，防止重复点击
+                btn.disabled = true;
+                
+                setTimeout(function(){
+                    document.forms[0].removeChild(p);
+                    btn.disabled = false;
+                    
+                    //如果登录成功就跳转到网站后台的入口
+                    if(json.status == 1){
+                        location.href = "admin.php";
+                    }
+                }, 2000);
+                
+              } else {
+                alert("响应失败", xhr.status);
+              }
+            } else {
+              //http请求正在继续，这里可以放一个gif图
+            }
+
+          }
+
+          //3. 设置请求参数
+          xhr.open('post', "check.php", true);
+
+          //4. 设置请求头,将内容类型设置为表单提交方式
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+          //5. 发送请求
+          let data = {
+              email : document.getElementsByName('email')[0].value,
+              password : document.getElementsByName('password')[0].value
+          }
+
+          //将js对象转换为json字符串
+          let data_json = JSON.stringify(data);
+
+          xhr.send('data='+data_json);
+
+        }
+    </script>
+</body>
+</html>
