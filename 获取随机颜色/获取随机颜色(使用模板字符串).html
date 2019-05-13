@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模板字符串</title>
+    <style type="text/css">
+        div{
+            float:left;
+            margin:50px;
+            width:100px;
+            height:100px;
+            text-align:center;
+            background-color: aliceblue;
+            border-radius: 50px;
+            box-shadow:3px 3px 15px;
+        }
+    </style>
+
+    <script src="jq.js"></script>
+    <script>
+        // 案例
+        $(function(){
+            var len = $('div').length;
+            for(let i=0; i<len; i++){
+                var x = Math.random()*255;
+                var y = Math.random()*255;
+                var z = Math.random()*255;
+                $('div').eq(i).css('background-color', `rgb(${x}, ${y}, ${z})`);
+            }
+        })
+    </script>
+</head>
+
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</body>
+</html>
